@@ -1296,8 +1296,15 @@ class AXMLPrinter(object):
                 self.buff += self.axml.getXMLNS()
 
                 for i in range(0, self.axml.getAttributeCount()):
-                    self.buff += "%s%s=\"%s\"\n" % (self.getPrefix(
-                        self.axml.getAttributePrefix(i)), self.axml.getAttributeName(i), self._escape(self.getAttributeValue(i)))
+                    name = self.axml.getAttributeName(i)
+                    if name == '' or name is None:
+                        androconf.warning("Unknown attribute {} type {} at index {}".format(name, _type, i))
+                        continue
+                    self.buff += "%s%s=\"%s\"\n" % (
+                        self.getPrefix(
+                            self.axml.getAttributePrefix(i)),
+                        self.axml.getAttributeName(i),
+                        self._escape(self.getAttributeValue(i)))
 
                 self.buff += u'>\n'
 
